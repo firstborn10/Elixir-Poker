@@ -1,17 +1,5 @@
 defmodule Hand do
 
-  def create_hand(cards) do
-  
-    sorted_ranks = 
-      cards
-      |> Enum.at(0)
-      |> Enum.sort(:desc)
-
-    [sorted_ranks,Enum.at(cards, 1)]
-
-
-  end
-
   # Ranks hands
   def rank_hand(hand) do
 
@@ -27,7 +15,6 @@ defmodule Hand do
       hand
       |> Enum.at(0)
       |> Enum.frequencies()
-      |> IO.inspect()
       |> Map.values()
       |> Enum.sort(:desc)
 
@@ -43,6 +30,7 @@ defmodule Hand do
         3
       histogram_hand == pair ->
         2
+
       # If no pair of any kind, will go on for further comparison
       true ->
         flush = flush_or_not(Enum.at(hand, 1))
@@ -54,8 +42,9 @@ defmodule Hand do
             6
           straight ->
             5
+
+          # High Card
           true ->
-            # High Card
             1
         end
     end
@@ -80,7 +69,12 @@ defmodule Hand do
 
   # Finds straight
   defp straight_or_not(hand) do
-      case hand do
+
+    sorted_hand = 
+      hand
+        |> Enum.sort(:desc)
+
+      case sorted_hand do
         [14, 5, _, _, _] ->
           true
         [a, _, _, _, b] when a - b == 4 ->
